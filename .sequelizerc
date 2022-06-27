@@ -1,0 +1,5 @@
+// Only used by sequelize-cli to run migrations.
+const {resolve} = require('path')
+module.exports = {
+  'migrations-path': resolve('src', 'migrations'),
+}

@@ -1,0 +1,11 @@
+{
+  "plugins": {
+  "@release-it/conventional-changelog": {
+    "preset": "express"
+  }
+},
+  "git": {"commitMessage": "chore: release ${version}"},
+  "github": {
+    "release": true
+  }
+}

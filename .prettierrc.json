@@ -1,0 +1,23 @@
+{
+	"printWidth": 120,
+	"useTabs": true,
+	"tabWidth": 4,
+	"singleQuote": true,
+	"semi": false,
+	"arrowParens": "avoid",
+	"alignObjectProperties": false,
+	"offsetTernaryExpressions": true,
+	"breakBeforeElse": true,
+	"importFormatting": "auto",
+	"breakLongMethodChains": true,
+	"indentChains": false,
+	"spaceBeforeFunctionParen": true,
+	"arrayBracketSpacing": true,
+	"spaceInParens": false,
+	"typeAngleBracketSpacing": false,
+	"yamlBracketSpacing": true,
+	"exportCurlySpacing": true,
+	"importCurlySpacing": true,
+	"objectCurlySpacing": true,
+	"typeCurlySpacing": true
+}
