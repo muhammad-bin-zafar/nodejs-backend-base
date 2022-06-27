@@ -19,6 +19,7 @@ The purpose of the guidelines are:
 
 Some files are added as examples in the folder structure.
 
+<!--
 ## REST API
 One of the most important guiding principles of REST is _stateless_. 
 Meaning, the requests do not reuse any previous context. Each request
@@ -94,3 +95,4 @@ async function login (req, res) {
 	user.save()
 }
 ```
+-->
