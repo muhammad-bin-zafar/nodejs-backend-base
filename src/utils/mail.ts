@@ -1,4 +1,4 @@
-import mail from '@src/loader/mail.js'
+import mail from '@src/config/mail.js'
 import ansiHTML from 'ansi-html-community'
 import nodemailer from 'nodemailer'
 import { expand, isDevEnv } from './basic.js'
@@ -12,7 +12,7 @@ export async function sendDevMail (error: Record<string, any> | string) {
 	.replace(/\t/g, ' '.repeat(4))
 	html = `<code>${html}</code>`
 
-	logger('error', error)
+	logger.error(error)
 	if (isDevEnv()) return
 
 	const { devmailRecvList } = mail
@@ -25,6 +25,6 @@ export async function sendDevMail (error: Record<string, any> | string) {
 	}
 	mail.devMailer
 	.sendMail(mailOpt)
-	.then(info => logger('app', `DevMail sent: ` + expand(info)))
-	.catch(err => logger('error', `DevMail not sent: ` + err.toString()))
+	.then(info => logger.app( `DevMail sent: ` + expand(info)))
+	.catch(err => logger.error( `DevMail not sent: ` + err.toString()))
 }

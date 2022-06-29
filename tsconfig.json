@@ -41,15 +41,14 @@
 			"@src/config/*": ["src/configs/*"],
 			"@src/dto": ["src/dto/index.ts"],
 			"@src/const": ["src/constants/index.ts"],
-			"@src/db": ["src/db/index.ts"],
+			"@src/db": ["src/configs/sequelize.ts"],
 			"@src/module": ["src/modules/index.ts"],
-			"@src/util": ["src/utils/index.ts"],
-			"@src/route": ["src/routes/index.ts"]
+			"@src/util": ["src/utils/index.ts"]
 		},
 		"noImplicitAny": false,
 		"suppressExcessPropertyErrors": true,
 		"suppressImplicitAnyIndexErrors": false
 	},
-	"include": ["src/**/*", "bin/**/*"],
+	"include": ["server.ts", "app.ts", "src/**/*", "bin/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

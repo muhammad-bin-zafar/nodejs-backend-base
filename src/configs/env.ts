@@ -1,5 +1,6 @@
 import 'dotenv/config'
 
+
 // NOTE:
 // As of now, each of the env vars are necessary.
 // Try to avoid having an env var to be null/undefined,
@@ -18,7 +19,7 @@ const devEnvMap = {
 	dbLogging: false,
 
 	nenv,
-	secret: <string>ENV.SECRET,
+	secret: <string>ENV.JWT_SECRET,
 
 	devmailServer: <string>ENV.DEVMAIL_SERVER,
 	devmailSender: <string>ENV.DEVMAIL_USER,
@@ -27,7 +28,7 @@ const devEnvMap = {
 }
 
 for (const [ key, value ] of Object.entries(devEnvMap)) {
-	if (value === undefined) throw Error(`[dev] Env var "${key}" not specified.`)
+	if (value === undefined) console.warn(`Environment variable "${key}" not specified.`)
 }
 
 /**

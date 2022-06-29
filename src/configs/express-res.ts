@@ -10,21 +10,12 @@ function mutateResponse (req: Request, res: Response, next) {
 		let result = {}
 		if (typeof data == 'string') result['message'] = data
 		else result = data
-		res.status(200).send({
-			data: result,
-			success: true,
-		})
+
+		res.status(200).send({ data: result, ok: true })
 	}
 
-	res.err = function (msg = 'Error', code = 200, errObject = {}, data = null) {
-		if (_.isObject(msg)) msg = msg.message || ''
-
-		res.status(code).send({
-			success: false,
-			data,
-			errorMessage: msg,
-			error: errObject,
-		})
+	res.err = function (data = 'Error', code = 200) {
+		res.status(code).send({	data, ok: false })
 	}
 
 	next()

@@ -1,5 +1,5 @@
 import { ValidationError } from 'express-validation'
-import { sendDevMail } from '../helpers/mail.js'
+import { sendDevMail } from '../utils/mail.js'
 import express from 'express'
 
 export default function (app: express.Application) {
@@ -22,16 +22,18 @@ export default function (app: express.Application) {
  */
 export async function errorHandler (err, req, res, next) {
 	if (err instanceof ValidationError) {
+
 		let resultMsg = ''
 		err.errors.forEach(e => {
-			resultMsg += e.message + '. '
-			//resultMsg += e.messages[0] + '. '
+			let tmpMsg = ''
+			e.messages.forEach(msg => tmpMsg += msg)
+			resultMsg += tmpMsg + '. '
 		})
-		return res.err(resultMsg, 200)
+		return res.err(resultMsg, err.status)
 	}
 
 	if (err.type === `entity.parse.failed`) {
-		return res.err('Entity parse failed.')
+		return res.err(err.type)
 	}
 
 	sendDevMail({ type: 'errorHandler', meta: req.meta, err })

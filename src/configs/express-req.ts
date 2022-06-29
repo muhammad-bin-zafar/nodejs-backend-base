@@ -2,7 +2,7 @@ import { Request, Response, Application } from 'express'
 import _ from 'lodash'
 import path from 'path'
 import Joi from 'typesafe-joi'
-import * as dto from '../validators/index.js'
+import * as dto from '@src/dto'
 
 export default function (app: Application) {
 	app.use(mutateRequest)
@@ -17,26 +17,9 @@ export default function (app: Application) {
  * as `getFuncCallerFile()`.
  */
 function mutateRequest (req: Request, res: Response, next) {
-	req.data = (prop: '' | 'body' | 'param' | 'query' = 'body', schema: any = undefined) => {
-		/** Typesafe-schema first, req[prop] second. */
-		if (_.isObjectLike(prop) && (_.isUndefined(schema) || _.isString(schema))) {
-			let tschema: string
-			if (_.isUndefined(schema)) tschema = 'body'
-			else tschema = schema
-
-			const data = getRequestDataByJoi(req, prop, <any>tschema)
-			return data
-		}
-		/** req[prop] first, schema-parent second. */
-		else if (!schema) {
-			const re = /(\w+)@|at (\w+) \(/g
-			const st = <string>Error().stack
-			let file = path.basename(getFuncCallerFile())
-			const func = (<RegExpExecArray>re.exec(st))[2]
-			file = file.slice(0, file.indexOf('.'))
-			schema = dto[file][func]
-		}
-		return getRequestDataByJoi(req, schema, prop)
+	req.data = (schema, prop) => {
+		const data = getRequestDataByJoi(req, schema, prop)
+		return data
 	}
 	next()
 }

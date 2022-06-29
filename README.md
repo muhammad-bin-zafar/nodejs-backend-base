@@ -27,10 +27,10 @@ contains enough info to understand the individual request.
 ## Concepts
 In REST, the primary data representation is called a "resource".
 
-- `users` is a **Collection** (collection resouce, plural naming), identified by `/users`.
-- `user` is a **Document**(singleton resource, singular naming), identified by `/users/{userId}`.
-- A **Controller** (named as a Verb) is an executable function, with parameters and return values, an example: `/users/{userId}/cart/pay`.
-- **Sub-collection Resources** are nested. In the URI `/users/{userId}/repositories`, "repositories" is a sub-collection resource. Similarly, a singleton in that sub-collection will be `/users/{userId}/repositories/{repositoryId}`.
+- `users` is a **collection** (collection resouce, plural naming), identified by `/users`.
+- `user` is a **document**(singleton resource, singular naming), identified by `/users/{userId}`.
+- A **controller** (named as a Verb) is an executable function, with parameters and return values, an example: `/users/{userId}/cart/pay`.
+- **Sub-collection resources** are nested. In the URI `/users/{userId}/repositories`, "repositories" is a sub-collection resource. Similarly, a singleton in that sub-collection will be `/users/{userId}/repositories/{repositoryId}`.
 
 
 ## Consistency

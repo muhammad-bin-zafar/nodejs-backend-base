@@ -1,19 +1,37 @@
 import { CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize'
-import { AutoIncrement, Column, Model, PrimaryKey, Table } from 'sequelize-typescript'
+import { AllowNull, AutoIncrement, Column, DataType, Default, DefaultScope, Model, PrimaryKey, Scopes, Table } from 'sequelize-typescript'
 
-type attr = InferAttributes<User>
-type crAttr = InferCreationAttributes<User>
+type attr = InferAttributes<user>
+type crAttr = InferCreationAttributes<user>
 
+@DefaultScope(()=>({
+	attributes: {exclude: ['password']}
+}))
+@Scopes(()=>({
+	'attr:cred': {
+		attributes: {include:['password']}
+	}
+}))
 @Table
-export default class User extends Model<attr, crAttr> {
+export default class user extends Model<attr, crAttr> {
+	@AllowNull(false)
 	@PrimaryKey
-	@AutoIncrement
-	@Column
+	@Default(DataType.UUIDV4)
+	@Column(DataType.UUIDV4)
 	id!: CreationOptional<string>
 
-	mobile!: string
+	@Column
+	mobile?: string
+
+	@Column
 	firstName!: string
+
+	@Column(DataType.TEXT)
 	lastName!: CreationOptional<string>
+
+	@Column
 	email!: string
+
+	@Column
 	password!: string
 }

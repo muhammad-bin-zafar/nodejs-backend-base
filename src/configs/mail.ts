@@ -1,14 +1,15 @@
-import { currEnv } from '@src/config/env.js'
+import { env } from '@src/config/env.js'
 import * as util from '@src/util'
-import Joi from 'joi'
+import lodash from 'lodash'
+import joi from 'typesafe-joi'
 import nodemailer from 'nodemailer'
 
-const user = currEnv.devmailSender
-const pass = currEnv.devmailPasswd
+const user = env.devmailSender
+const pass = env.devmailPasswd
 
 export const devMailer = nodemailer.createTransport({
-	name: currEnv.devmailServer,
-	host: currEnv.devmailServer,
+	name: env.devmailServer,
+	host: env.devmailServer,
 	port: 465,
 	secure: true,
 	auth: { user, pass },
@@ -18,8 +19,8 @@ retryCredVerify(idemptFn1, 'DevMailer')
 
 // FIXME Don't use devmail creds :)
 export const userMailer = nodemailer.createTransport({
-	name: currEnv.devmailServer,
-	host: currEnv.devmailServer,
+	name: env.devmailServer,
+	host: env.devmailServer,
 	port: 465,
 	secure: true,
 	auth: { user, pass },
@@ -28,17 +29,17 @@ const idemptFn2 = () => userMailer.verify()
 retryCredVerify(idemptFn2, 'UserMailer')
 
 /** List of validated dev email addresses. */
-export const devmailRecvList = currEnv.devmailRecvList
+export const devmailRecvList = env.devmailRecvList
 .split(',')
 .map(email => email.trim())
 .filter(email => isEmail(email))
-util.logger('app', 'Configured ' + devmailRecvList.length + ' dev emails.')
+util.logger.app('Configured ' + devmailRecvList.length + ' dev emails.')
 
 export default { devMailer, userMailer, devmailRecvList }
 
 function isEmail (email) {
-	const result = Joi.validate(email, Joi.string().email())
-	return !util.isErr(result.error)
+	const result = joi.validate(email, joi.string().email())
+	return !lodash.isError(result.error)
 }
 
 /**
@@ -55,8 +56,8 @@ async function retryCredVerify<T extends Function> (
 	const retryMsg = `[${tag}] Retrying to verify.`
 	const errMsg = `[${tag}] Failed to verify`
 	const thenResult = result => {
-		if (result) util.logger('app', `[${tag}] Verified.`)
-		else if (result === false) util.logger('error', `[${tag}] Incorrect.`)
+		if (result) util.logger.app(`[${tag}] Verified.`)
+		else if (result === false) util.logger.error(`[${tag}] Incorrect.`)
 	}
 
 	for (let i = 0; i < 3; i++) {
@@ -65,11 +66,11 @@ async function retryCredVerify<T extends Function> (
 		} catch (err: any) {
 			error = err
 			if (err.errno === -111) {
-				util.logger('error', retryMsg)
+				util.logger.error(retryMsg)
 				await util.sleep(30000)
 				continue
 			}
 		}
 	}
-	util.logger('error', errMsg + ': ' + error.toString())
+	util.logger.error(errMsg + ': ' + error.toString())
 }
