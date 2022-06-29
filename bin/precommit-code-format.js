@@ -7,7 +7,7 @@ import chalk from 'chalk'
 import { promises as fs } from 'fs'
 
 const log = msg => console.log(chalk.cyan('code-formatter: ') + msg)
-$.verbose = false
+//$.verbose = false
 
 // Config and arguments by dirnames.
 const ConfigList = [
