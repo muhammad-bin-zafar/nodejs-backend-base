@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha --timeout 3000 'dist/tests/**/*.js'",
     "serve": "tsc-watch --noClear --onSuccess 'node --trace-uncaught bin/tsc-ok.js' --onFailure 'node bin/tsc-err.js'",
-	"build": "tsc -p tsconfig.json; node bin/tsc-ok.js"
+    "build": "tsc -p tsconfig.json; node bin/tsc-ok.js"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "husky": "^8.0.1",
     "release-it": "^15.1.1",
     "sound-play": "^1.1.0",
+    "tsc-alias": "^1.6.11",
     "typesafe-joi": "^2.1.0",
     "zx": "^7.0.2"
   },

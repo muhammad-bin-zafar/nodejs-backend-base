@@ -8,7 +8,7 @@ await $`cp ./tsconfig.json dist`
 await $`cp ./package.json dist`
 await $`cp -r bin dist`
 await $`cp .env dist`
-await $`cd dist; npx tsc-alias -p tsconfig.json -v --dir .`.pipe(process.stdout)
+await $`cd dist; npx tsc-alias -p tsconfig.json -v --dir .`
 console.log(`$ cd dist; node server.js`)
 const run = child.spawn('node', [ 'server.js' ], { cwd: './dist' })
 run.stdout.on('data', data => process.stdout.write(data))

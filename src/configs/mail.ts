@@ -72,5 +72,5 @@ async function retryCredVerify<T extends Function> (
 			}
 		}
 	}
-	util.logger.error(errMsg + ': ' + error.toString())
+	util.logger.error(errMsg + ' ' + error.toString())
 }

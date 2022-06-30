@@ -7,13 +7,15 @@ import * as v from '@src/dto'
 
 /**
  * To validate request data, using Joi schemes.
- * Disallows any unknown body/query/params.
+ * Disallows any unknown body/query/params by default.
+ *
+ * Unknown body/query/params may be required to be
+ * allowed when having multiple schemes, as in:
+ * `router.post('/users', $(bodySchema), $(querySchema))`
  */
-function $ (dto) {
-	return validate({
-		...dto,
-		options: { allowUnknownBody: false, allowUnknownQuery: false, allowUnknownParams: false },
-	})
+function $ (dto, disallow=true) {
+	const options = { allowUnknownBody: false, allowUnknownQuery: false, allowUnknownParams: false }
+	return validate({...dto, ...(disallow && {options})})
 }
 
 logger.app('Configuring API endpoints.')
