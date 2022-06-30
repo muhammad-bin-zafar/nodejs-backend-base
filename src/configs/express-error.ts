@@ -22,11 +22,12 @@ export default function (app: express.Application) {
  */
 export async function errorHandler (err, req, res, next) {
 	if (err instanceof ValidationError) {
-
 		let resultMsg = ''
 		err.errors.forEach(e => {
 			let tmpMsg = ''
-			e.messages.forEach(msg => tmpMsg += msg)
+			console.log(e.message)
+			// @ts-ignore
+			e.messages.forEach(msg => (tmpMsg += msg))
 			resultMsg += tmpMsg + '. '
 		})
 		return res.err(resultMsg, err.status)

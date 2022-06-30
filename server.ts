@@ -1,6 +1,6 @@
 const primaryProcInfo = { name: '#', deployedAt: new Date(), pid: process.pid }
 await import('reflect-metadata')
-const { writeFile, readFile } = await import('fs/promises')
+const { promises:{readFile, writeFile} } = await import('fs')
 const { default: cluster } = await import('cluster')
 const { default: os } = await import('os')
 await import('dotenv/config')
@@ -11,13 +11,15 @@ if (cluster.isWorker) {
 	logger.procInfo = forkList.find(f => f.pid === process.pid)
 }
 const { expand, isDevEnv, genUniqTimestamp } = await import('./src/utils/basic.js')
-const { sendDevMail } = await import('./src/utils/mail.js')
+//const { sendDevMail } = await import('./src/utils/mail.js')
 
 // Catch all errors, and send to DevMail.
 // - unhandled errors
 // - unhandled unawaited promise rejections
-process.on('uncaughtException', error => sendDevMail(error))
-process.on('unhandledRejection', (reason, promise) => sendDevMail({ reason, promise }))
+//process.on('uncaughtException', error => sendDevMail(error))
+//process.on('unhandledRejection', (reason, promise) => sendDevMail({ reason, promise }))
+process.on('uncaughtException', _=>console.log(_))
+process.on('unhandledRejection', (reason, promise) => console.log({reason, promise}))
 
 if (cluster.isPrimary) {
 	// eslint-disable-next-line no-var

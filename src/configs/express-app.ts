@@ -26,10 +26,7 @@ const blueText = str => chalk.whiteBright.bgCyan(str)
 function logRequests (req, res, next) {
 	const { protocol, method, url } = req
 
-	let result = [
-		chalk.white.bgBlueBright(`Fork ${process.pid}`),
-		chalk.black.bgGreenBright([ protocol, method, url ].join(' ')),
-	].join(' ')
+	let result = chalk.black.bgGreenBright([ method, url ].join(' '))
 
 	for (const field of [ 'headers', 'params', 'query', 'body' ]) {
 		const expanded = expand(hide(req[field], hideFields))

@@ -53,11 +53,11 @@ async function retryCredVerify<T extends Function> (
 	tag: string
 ): Promise<typeof promiseFunc | undefined> {
 	let error
-	const retryMsg = `[${tag}] Retrying to verify.`
-	const errMsg = `[${tag}] Failed to verify`
+	const retryMsg = tag + ` retrying to verify.`
+	const errMsg = tag + ` failed to verify.`
 	const thenResult = result => {
-		if (result) util.logger.app(`[${tag}] Verified.`)
-		else if (result === false) util.logger.error(`[${tag}] Incorrect.`)
+		if (result) util.logger.app(tag + ` verified.`)
+		else if (result === false) util.logger.error(tag + ` incorrect.`)
 	}
 
 	for (let i = 0; i < 3; i++) {
