@@ -4,48 +4,41 @@ import { $ } from 'zx'
 import { spinner } from 'zx/experimental'
 import path from 'path'
 import chalk from 'chalk'
+import glob from 'glob'
 import { promises as fs } from 'fs'
+$.verbose = false
 
 const log = msg => console.log(chalk.cyan('code-formatter: ') + msg)
-//$.verbose = false
+const g = pattern => glob.sync(pattern, { absolute: true })
 
 // Config and arguments by dirnames.
 const ConfigList = [
 	{
-		dir: [ 'src/configs', 'src/utils', 'src/modules', 'src/loaders', 'bin', 'tests', 'types' ],
+		dir: [ g('src/configs/*'), g('src/utils/*'), g('src/modules/**/*'), g('bin/*'), g('tests/**/*'), g('types/*') ],
 		conf: `-w --config .prettierrc.json`.split(' '),
 	},
 	{
-		dir: [ 'src/constants', 'src/dto' ],
+		dir: [ g('src/constants/**/*'), g('src/dto/**/*') ],
 		conf: `-w --print-width 120 --align-object-properties true --break-long-method-chains false`.split(' '),
 	},
 	{
-		dir: [ 'src/routes', 'src/migrations' ],
+		dir: [ g('src/*'), g('src/migrations/**/*') ],
 		conf: `-w --print-width 150`.split(' '),
 	},
 	{
-		dir: [ 'src/db' ],
+		dir: [ g('src/db/*') ],
 		conf: `-w --print-width 200 --align-object-properties true`.split(' '),
 	},
 ]
 
 // Runtime
-const { stdout: _staged } = await $`git diff --staged --name-status`
+const { stdout: _staged } = await $`git diff --staged --name-only`
 const staged = await Promise.all(
 	_staged
 	.split('\n')
 	.slice(0, -1)
-	.map(async line => {
-		const arrData = line.split('\t')
-		const status = arrData[0]
-		const filename = arrData[1]
-		if (status !== 'D') {
-			if (!(await access(filename))) {
-				log('parse error, file not found in line ' + chalk.yellow(line))
-				return
-			}
-			return filename
-		}
+	.map(async filename => {
+		if (await access(filename)) return filename
 	})
 )
 
@@ -78,8 +71,10 @@ function access (filename) {
 }
 
 function getConfig (filename) {
-	const fdir = path.dirname(filename)
-	const config = ConfigList.find(config => config.dir.includes(fdir))
+	const absFilename = path.resolve(filename)
+	const config = ConfigList.find(config => {
+		return config.dir.find(fileList => fileList.includes(absFilename))
+	})
 	if (!config) return null
 	return config.conf
 }
