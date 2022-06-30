@@ -6,7 +6,6 @@
 	<img heigh=auto width=400 src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png"/>
 	<p align=center><b>D E V &nbsp;&nbsp;&nbsp; G U I D E L I N E S</b></p>
 </p>
-
 <hr></hr>
 
 The purpose of the guidelines are:
@@ -18,6 +17,21 @@ The purpose of the guidelines are:
 	- scalable
 
 Some files are added as examples in the folder structure.
+
+### Features
+- Simple & scalable project structure
+- Consistent dev environment
+	- precommit hooks to format code, for uniformity in code style
+	- support for multiple platform i.e. Windows, Mac, Linux
+- TypeScript-integrated ORM, Sequelize
+- TypeScript-integrated validator, Joi
+- TypeScript-integrated tests for API response compatibility, to check and fail tests, if there are:
+	- changes in properties' data-type
+	- new properties
+	- removed properties
+	- null-able properties
+- (todo) Built-in support for file upload
+- (todo) Built-in security features
 
 <!--
 ## REST API
