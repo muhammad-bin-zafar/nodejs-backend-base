@@ -6,7 +6,6 @@
 	<img heigh=auto width=400 src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png"/>
 	<p align=center><b>D E V &nbsp;&nbsp;&nbsp; G U I D E L I N E S</b></p>
 </p>
-
 <hr></hr>
 
 The purpose of the guidelines are:
@@ -19,13 +18,29 @@ The purpose of the guidelines are:
 
 Some files are added as examples in the folder structure.
 
-<!--
+### Features
+- Simple & scalable project structure
+- Consistent dev environment
+	- precommit hooks to format code, for uniformity in code style
+	- support for multiple platform i.e. Windows, Mac, Linux
+- TypeScript-integrated ORM, Sequelize
+- TypeScript-integrated validator, Joi
+- TypeScript-integrated tests for API response compatibility, to check and fail tests, if there are:
+	- changes in properties' data-type
+	- new properties
+	- removed properties
+	- null-able properties
+- Built-in DevMail, to alert developers when backend crashed in production
+- (TODO) Built-in support for file upload
+- (TODO) Built-in security features
+
+
 ## REST API
 One of the most important guiding principles of REST is _stateless_. 
 Meaning, the requests do not reuse any previous context. Each request
 contains enough info to understand the individual request.
 
-## Concepts
+### Concepts
 In REST, the primary data representation is called a "resource".
 
 - `users` is a **collection** (collection resouce, plural naming), identified by `/users`.
@@ -34,9 +49,9 @@ In REST, the primary data representation is called a "resource".
 - **Sub-collection resources** are nested. In the URI `/users/{userId}/repositories`, "repositories" is a sub-collection resource. Similarly, a singleton in that sub-collection will be `/users/{userId}/repositories/{repositoryId}`.
 
 
-## Consistency
+### Consistency
 Some constraints in REST API naming ensures a design of scalable API endpoints:
-- Use nouns to name represent resources. Example: `users`, `orders`, `categories`.
+- Use nouns to name, and represent resources. Example: `users`, `orders`, `categories`.
 - Use hypen, not underscores. Use lowercase letters in URI, never camel-case. `GET /food-categories`.
 - No trailing forward slash. Example: `GET /users/` is wrong, and `GET /users` is correct.
 - Never use CRUD function names in URIs. Rather:
@@ -48,7 +63,7 @@ Some constraints in REST API naming ensures a design of scalable API endpoints:
 - Use query components to filter collection, never use for anything else. Example: `/users?region=Malaysia&sort=createdAt`.
 
 
-# Data Transfer Objects
+## Data Transfer Objects
 Joi is used to validate/sanitize the client data. JSON is primarily supported.
 The purpose of request fields are:
 - `req.body`: 
@@ -78,8 +93,8 @@ function signup (req:Request, res) {
 ```
 
 
-# Data Access Objects
-Sequelize is the most popular Node.js ORM in the entire NPM registry. Sequelize and Prisma compete 
+## Data Access Objects
+Sequelize is the most popular Node.js ORM in the entire NPM registry, Mongoose being an ODM. Sequelize and Prisma compete 
 closely, so they are almost the same popular. However, much of the features of Sequlize requires
 dynamic configuration internally. So static analysis doesn't become possible, and Sequelize doesn't
 provide much advantage of type-anotation with TypeScript. That's why efforts were undertaken in this regard.
@@ -95,4 +110,3 @@ async function login (req, res) {
 	user.save()
 }
 ```
--->
