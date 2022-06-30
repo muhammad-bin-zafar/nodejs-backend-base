@@ -6,40 +6,104 @@
 	<img heigh=auto width=400 src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png"/>
 	<p align=center><b>D E V &nbsp;&nbsp;&nbsp; G U I D E L I N E S</b></p>
 </p>
-
 <hr></hr>
 
 The purpose of the guidelines are:
 - to bring consistency & uniformity in Node.js backend code
-- to enable developers to focus on the business value, instead of the backend application itself
+- to enable developers to focus on the business value, instead of the app itself
 - to enable developers to write code faster, that are:
 	- clean
 	- readable & maintainable
 	- scalable
 
-Some files are added as examples in the folder structure.
+Some files are added as examples in the project structure. Noteworthy that, this project is intended for a monolith.
 
-<!--
-## REST API
+### Features
+1. Simple & scalable project structure
+2. Consistent dev environment
+	- precommit hooks to format code, for uniformity in code style
+	- support for multiple platform i.e. Windows, Mac, Linux
+3. TypeScript-integrated ORM, Sequelize
+4. TypeScript-integrated validator, Joi
+5. TypeScript-integrated tests for API response compatibility, to check and fail tests, if there are:
+	- changes in properties' data-type
+	- new properties
+	- removed properties
+	- null-able properties
+6. Built-in DevMail, to alert developers when backend crashed in production
+7. `TODO` Built-in support for file upload
+8. `TODO` Built-in security features
+
+### Structure
+```
+	.
+	├── server.ts (the main file)
+	├── app.ts    (the application)
+	├── bin/      (various scripts)
+	├── test/
+	└── src/
+		├── configs/
+		├── constants/
+		├── db/            (database models)
+		├── dto/           (request data validations)
+		├── migrations/    (database migrations)
+		├── utils/         (helper utils)
+		└── services/      (business domains)
+		    ├── index.ts   (exports all apis & service methods)
+		    ├── order/
+		    ├── shop/
+		    └── user/
+```
+
+### Service Scalability
+
+Let's take from examples. 
+
+Firstly, let's say we want to add an Item service to our application. The admin will manage the items. So, it's going to be simple CRUD APIs, storing data into DB. To implement, we'll create a simple file with 5 standard methods in `src/services/item/index.ts`:
+```ts
+export default class Item {
+	static create(req, rest) {}
+	static update(req, res) {}
+	static list(req, res) {}
+	static get(req, res) {}
+	static remove(req, res) {}
+}
+```
+
+Secondly, let's say we want to add a Cart service to our application. Now, this is relatively complicated than Item service. Lots of methods & business logic, security, and performance to consider. In this case, we'd create files like below:
+```
+    services/
+    └── cart/
+	    ├── index.ts
+	    ├── add.ts
+	    ├── update.ts
+	    ├── checkout.ts
+	    ├── free-campaign.ts
+	    ├── calculate.ts
+	    └── list.ts
+```
+
+## REST
 One of the most important guiding principles of REST is _stateless_. 
 Meaning, the requests do not reuse any previous context. Each request
 contains enough info to understand the individual request.
 
-## Concepts
+To learn in details about API design, every backend developer should read the [Google Cloud API Design](https://cloud.google.com/apis/design) guide.
+
+### Concepts
 In REST, the primary data representation is called a "resource".
 
-- `users` is a **collection** (collection resouce, plural naming), identified by `/users`.
-- `user` is a **document**(singleton resource, singular naming), identified by `/users/{userId}`.
-- A **controller** (named as a Verb) is an executable function, with parameters and return values, an example: `/users/{userId}/cart/pay`.
-- **Sub-collection resources** are nested. In the URI `/users/{userId}/repositories`, "repositories" is a sub-collection resource. Similarly, a singleton in that sub-collection will be `/users/{userId}/repositories/{repositoryId}`.
+- A **collection resource** (plural naming), identified by URI `/users`.
+- A single **document resource** (singular naming), identified by URI `/users/:user_id`.
+- **Sub-collection resources** are nested. In the URI `/users/:user_id/repositories`, "repositories" is a sub-collection resource. Similarly, a singleton in that sub-collection will be `/users/:user_id/repositories/:repo_id`.
 
 
-## Consistency
+### Consistency
 Some constraints in REST API naming ensures a design of scalable API endpoints:
-- Use nouns to name represent resources. Example: `users`, `orders`, `categories`.
-- Use hypen, not underscores. Use lowercase letters in URI, never camel-case. `GET /food-categories`.
+- Use plural nouns to name, and represent resources. Example: `users`, `orders`, `categories`.
+- Use hypen, not underscores. Use lowercase letters in URI, never camel-case. `GET /food-categories`, not `GET /foodCategories`.
 - No trailing forward slash. Example: `GET /users/` is wrong, and `GET /users` is correct.
-- Never use CRUD function names in URIs. Rather:
+- Never use CRUD function names in URIs, like `/users/list` or `/users/create`. Rather use:
 	- `GET /users` - get all users.
 	- `GET /users/:id` - get a single user.
 	- `POST /users/:id` - create a single user.
@@ -48,7 +112,10 @@ Some constraints in REST API naming ensures a design of scalable API endpoints:
 - Use query components to filter collection, never use for anything else. Example: `/users?region=Malaysia&sort=createdAt`.
 
 
-# Data Transfer Objects
+## Data Objects
+
+### Client Data
+
 Joi is used to validate/sanitize the client data. JSON is primarily supported.
 The purpose of request fields are:
 - `req.body`: 
@@ -63,11 +130,12 @@ The purpose of request fields are:
 	- Example: `/users?region=Malaysia&sort=createdAt`.
 - `req.params`:
 	- Path variables are used to get a singleton from a collection resource.
-	- Example: `GET /users/{userId}`, `GET /categories/{id}`.
+	- Example: `GET /users/{user_id}`, `GET /categories/{id}`.
 
 To get type-annotated & type-safe DTO:
 ```ts
-// file: src/modules/user/controller.ts
+
+//// file: src/modules/user/index.ts
 import {Request} from 'express'
 import dto from '@src/dto'
 
@@ -77,16 +145,27 @@ function signup (req:Request, res) {
 }
 ```
 
+### Data Model
 
-# Data Access Objects
-Sequelize is the most popular Node.js ORM in the entire NPM registry. Sequelize and Prisma compete 
-closely, so they are almost the same popular. However, much of the features of Sequlize requires
-dynamic configuration internally. So static analysis doesn't become possible, and Sequelize doesn't
-provide much advantage of type-anotation with TypeScript. That's why efforts were undertaken in this regard.
+Sequelize is the most popular Node.js ORM in the entire NPM registry, Mongoose being an ODM. Sequelize and Prisma compete closely, so they are almost the same popular. However, much of the features of Sequlize requires dynamic configuration internally. So static analysis doesn't become possible, and Sequelize doesn't provide much advantage of type-anotation with TypeScript. That's why efforts were undertaken in this regard.
 
 To get type-annotated & type-safe DAO:
 ```ts
-// file: src/modules/user/controller.ts
+//// file: src/db/user.ts
+@Table
+export default class user extends Model<attr, crAttr> {
+	@PrimaryKey
+	@Column(DataType.UUIDV4)
+	id!: CreationOptional<string>
+
+	@Column
+	name!: string
+
+	@Column
+	email!: string
+}
+
+//// file: src/services/user/index.ts
 import db from '@src/db'
 
 async function login (req, res) {
@@ -95,4 +174,3 @@ async function login (req, res) {
 	user.save()
 }
 ```
--->

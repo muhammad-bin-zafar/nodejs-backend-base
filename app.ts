@@ -7,6 +7,7 @@ import appRes from '@src/config/express-res.js'
 import appErr from '@src/config/express-error.js'
 
 const app = express()
+app.use()
 appReq(app)
 appRes(app)
 appConfig(app)

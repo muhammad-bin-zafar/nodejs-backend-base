@@ -16,10 +16,8 @@ const { expand, isDevEnv, genUniqTimestamp } = await import('./src/utils/basic.j
 // Catch all errors, and send to DevMail.
 // - unhandled errors
 // - unhandled unawaited promise rejections
-//process.on('uncaughtException', error => sendDevMail(error))
-//process.on('unhandledRejection', (reason, promise) => sendDevMail({ reason, promise }))
-process.on('uncaughtException', _=>console.log(_))
-process.on('unhandledRejection', (reason, promise) => console.log({reason, promise}))
+process.on('uncaughtException', error => sendDevMail(error))
+process.on('unhandledRejection', (reason, promise) => sendDevMail({ reason, promise }))
 
 if (cluster.isPrimary) {
 	// eslint-disable-next-line no-var
