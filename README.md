@@ -8,6 +8,9 @@
 </p>
 <hr></hr>
 
+<img height=450px width=auto src=https://user-images.githubusercontent.com/90899789/177304942-f50b8073-cd1c-4e18-9f6c-281903d4a710.gif />
+
+
 The purpose of the guidelines are:
 - to bring consistency & uniformity in Node.js backend code
 - to enable developers to focus on the business value, instead of the app itself
@@ -19,6 +22,7 @@ The purpose of the guidelines are:
 Some files are added as examples in the project structure. Noteworthy that, this project is intended for a monolith.
 
 ### Features
+
 1. Simple & scalable project structure
 2. Consistent dev environment
 	- precommit hooks to format code, for uniformity in code style
