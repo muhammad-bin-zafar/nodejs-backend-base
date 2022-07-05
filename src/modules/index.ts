@@ -1,19 +1,9 @@
-import userapi from './user/api.js'
-import usersvc from './user/service.js'
+import { router as UserRouter, services as UserService } from './user/index.js'
 
-const user = {
-	api: userapi,
-	service: usersvc,
+export const routers = {
+	user: UserRouter,
 }
 
-export default { user }
-
-/** APIs from all modules. */
-export const api = {
-	user: user.api,
-}
-
-/** Services from all modules. */
-export const service = {
-	user: user.service,
+export const services = {
+	user: UserService,
 }

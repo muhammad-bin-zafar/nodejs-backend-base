@@ -4,13 +4,13 @@ import { AllowNull, AutoIncrement, Column, DataType, Default, DefaultScope, Mode
 type attr = InferAttributes<user>
 type crAttr = InferCreationAttributes<user>
 
-@DefaultScope(()=>({
-	attributes: {exclude: ['password']}
+@DefaultScope(() => ({
+	attributes : { exclude: [ 'password' ] },
 }))
-@Scopes(()=>({
-	'attr:cred': {
-		attributes: {include:['password']}
-	}
+@Scopes(() => ({
+	'attr:cred' : {
+		attributes : { include: [ 'password' ] },
+	},
 }))
 @Table
 export default class user extends Model<attr, crAttr> {
@@ -26,7 +26,7 @@ export default class user extends Model<attr, crAttr> {
 	@Column
 	firstName!: string
 
-	@Column(DataType.TEXT)
+	@Column(DataType.STRING)
 	lastName!: CreationOptional<string>
 
 	@Column

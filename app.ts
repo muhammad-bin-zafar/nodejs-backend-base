@@ -1,17 +1,14 @@
 import express from 'express'
-import endpoints from '@root/src/routes.js'
-
-import appConfig from '@src/config/express-app.js'
-import appReq from '@src/config/express-req.js'
-import appRes from '@src/config/express-res.js'
-import appErr from '@src/config/express-error.js'
+import expressConfig from '@src/config/express-app.js'
+import expressError from '@src/config/express-error.js'
+import {routers} from '@src/module'
 
 const app = express()
-app.use()
-appReq(app)
-appRes(app)
-appConfig(app)
-endpoints(app)
-appErr(app)
+expressConfig(app)
 
+// All application endpoints.
+app.use('/v1/', routers.user)
+
+// Error handler must be the last.
+expressError(app)
 export { app }

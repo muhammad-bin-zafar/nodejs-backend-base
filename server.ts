@@ -11,7 +11,7 @@ if (cluster.isWorker) {
 	logger.procInfo = forkList.find(f => f.pid === process.pid)
 }
 const { expand, isDevEnv, genUniqTimestamp } = await import('./src/utils/basic.js')
-//const { sendDevMail } = await import('./src/utils/mail.js')
+const { sendDevMail } = await import('./src/utils/mail.js')
 
 // Catch all errors, and send to DevMail.
 // - unhandled errors

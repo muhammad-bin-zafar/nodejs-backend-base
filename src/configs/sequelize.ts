@@ -7,11 +7,12 @@ export { user }
 import user from '../db/user.js'
 
 const sequelize = new Sequelize({
-	dialect: 'sqlite',
-	database: 'database-name',
-	storage: ':memory:',
+	dialect: <any>env.dbDialect,
+	port: env.dbPort,
+	database: env.dbName,
 	models: [ user ],
 	logging: env.dbLogging,
+	password: env.dbPasswd,
 })
 
 sequelize
